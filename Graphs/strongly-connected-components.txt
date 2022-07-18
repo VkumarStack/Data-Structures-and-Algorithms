@@ -1,0 +1,37 @@
+A strongly connected component of a graph is a set of vertices such that for every
+pair of vertices in the set are reachable from each other. Decomposing a graph into
+its strongly connected components can be useful as many graph algorithms can be 
+performed within each strongly connected component and then recombined. 
+
+Kosaraju's algorithm for strongly connected components exploits the fact that a set
+of vertices forming strongly connected components will still be strongly connected 
+even if transposed - that is, the directions of the edges are reversed.
+
+To compute the transpose of a graph, iterate through each edge in the graph's 
+adjacency list and reverse the pairs. As an example, if the vertex marked as 1's 
+adjacency list is as follows: [2, 4, 7], then, as you iterate through each of its 
+edge pairs, you would go to the end edge and insert 1 to that edge's adjacency 
+list - so 2, 4, and 7's adjacency list would contain 1. 
+
+
+Kosaraju's Algorithm for Strongly Connected Components:
+    call a modified DFS(G), placing each vertex on a stack once it is finished 
+    compute the transpose of G
+    call DFS(G tranpose), but in the main loop of DFS, consider the vertices in 
+        the order of the stack
+    output the vertices of each tree formed by the depth-first forest as a 
+    separate strongly connected component 
+
+Kosaraju's algorithm runs in O(V + E) time.
+
+The intuition for this algorithm is as follows:
+    Transposing the graph will still maintain any strongly connected components.
+    Performing a depth-first search on the transpose of the graph in reverse 
+    order ensures that each "search" within the main loop only iterates through
+    a set of connected components. Although transposing the graph could allow 
+    a search to "escape" the set of connected components, the reverse ordering 
+    prevents this from occuring. This is because the reversal ensures that 
+    edges between strongly connected components are only considered after 
+    each strongly connected component is fully explored - so the depth-first 
+    search will view another, black node as already explored and therefore not 
+    exit the current strongly connected component it is exploring.

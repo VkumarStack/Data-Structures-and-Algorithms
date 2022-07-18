@@ -1,0 +1,80 @@
+A depth-first search explores edges out of the most recently discovered vertex v
+that still has unexplored edges. Once those edges are explored, the search 
+backtracks to explore other vertices in the same fashion until all vertices 
+reachable from the original source vertex have been discovered. If there are 
+any undiscovered vertices remaining, then another depth-first search is performed 
+using that vertex as the new source. 
+
+A depth-first search produces a depth-first forest, which consists of several 
+depth-first trees (unlike a breadth-first search which always produces a single
+tree).
+
+A depth-first search follows the same coloring pattern of vertices: white, gray,
+ and black. Doing so ensures that a vertex is unique to only a single tree (so 
+ it does not appear in multiple trees). A depth-first search also involves a 
+ timestamp of each vertex - one timestamp for when the vertex is first discovered 
+ (gray) and another timestamp for when the vertex is completed (black).
+
+ DFS(G)
+    for each vertex u in G.V 
+        u.color = white 
+        u.p = NIL
+    time = 0
+    for each vertex u in G.V 
+        if u.color == white 
+            DFS-Visit(G,u)
+
+DFS-Visit(G,u)
+    time = time + 1 // white vertex u has just been discovered
+    u.d = time // discovery time  
+    u.color = gray 
+    for each v in G.Adj[u]
+        if v.color == white 
+            v.p = u 
+            DFS-Visit(G,v)
+    u.color = black
+    time = time + 1 
+    u.f = time // end time 
+
+Like breadth-first search, depth-first search has a running time of O(V + E).
+
+The starting and ending discovery times form a parenthesis structure. For any two
+vertices u and v, one of the three following conditions holds:
+    The intervals [u.d, u.f] and [v.d, v.f] are entirely disjoint and neither u nor
+    v is a descendant of the other in the depth-first forest.
+
+    The interval [u.d, u.f] is contained entirely within the interval [v.d, v.f]
+    and u is a descendant of v in a depth-first tree.
+
+    The interval [v.d, v.f] is contained entirely within the interval [u.d, u.f]
+    and v is a descendant of u in a depth-first tree 
+
+These properties intuitively make sense since an interval being nested within another
+interval is indicative of that the nested interval's vertex being connected to the 
+outer vertex by nature of the algorithm.
+
+A depth-first forest can be used to classify the edges of the input graph:
+    Tree edges are edges in the depth-first forest. Edge (u, v) is a tree edge if 
+    v was first discovered by exploring edge (u, v). When an adjacent vertex is 
+    white, the current vertex and that vertex form a tree edge. 
+
+    Back edges are edges (u, v) connecting a vertex u to an ancestor v in a 
+    depth-first tree (including self-loops). When an adjacent vertex is gray, the 
+    current vertex and that vertex form a back edge. This intuitively makes sense 
+    because a vertex being discovered can only be gray if that vertex is the 
+    ancestor of the current vertex. The presence of a back edge indicates that 
+    the graph contains a cycle. 
+
+    Forward edges are nontree edges (u, v) connecting a vertex to a descendant 
+    v in a depth-first tree (connecting to a descendant that is not a child).
+
+    Cross edges are all other edges. They can go between vertices in the same 
+    depth-first tree (as long as one is not an ancestor of the other) or they 
+    can go between vertices in different depth-first trees. Both forward and 
+    cross edges occur when an adjacent vertex is black. This intuitively makes 
+    sense since encountering a black vertex indicates that either the vertex is 
+    a descendant (but not an immediate child as this would have formed a tree 
+    edge) or from a different tree (that has already been fully discovered).
+
+In an undirected graph, a depth-first search tree will only contain tree edges or 
+back edges (no forward or cross edges).

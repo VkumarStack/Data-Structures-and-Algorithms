@@ -1,0 +1,44 @@
+Given a graph G and a source vertex s, a breadth-first search explores the edges of G
+to discover every vertex that is reachable from s. It does so in a manner discovering 
+all vertices at a distance k from s before discovering any vertices at distance k + 1.
+
+A breadth-first search creates a breadth-first tree with root s and descendants being 
+all reachable vertices. The path in this tree from the source vertex s to an arbitrary
+vertex v represents the shortest path from s to v in G. 
+
+When performing a breadth-first search, record of each vertex is represented as a
+color: white, gray, or black. Undiscovered vertices are white, and discovered 
+vertices are gray or black. A vertice is gray if there are white vertices adjacent
+to it. A vertice is black if there are only gray or black vertices adjacent to it.
+This representation provides meaningful information when providing the 
+breadth-first search.
+
+BFS(G, s) // Graph = G, Source = s 
+    for each vertex u in G.V except for s
+        u.color = white 
+        u.d = infinity // Distance from s 
+        u.p = NIL // Parent of u in the breadth-first tree 
+    s.color = gray 
+    s.d = 0
+    s.p = NIL
+    Q = 0 // Queue
+    Enqueue(Q,s)
+    while Q != 0
+        u = Dequeue(Q)
+        for each v in G.Adj[u] // getting all edges adjacent to u; (u, v)
+            if v.color == white 
+                v.color = gray 
+                v.d = u.d + 1 // Updates distance of v from s 
+                v.p = u // v's predecessor is u in the tree 
+                Enqueue(Q, v)
+        u.color = black // All adjacent vertices to u have been discovered, so
+        it is now black
+
+Breadth-first search runs in O(V + E) time, since each vertex and edge is only 
+scanned once. 
+
+Intuitively, breadth-first search is able to find the shortest path because 
+vertices closest to the source are being discovered first, so even if there is 
+another, longer path to a given vertex, it will not be discovered first and will
+not be recorded as the shortest path since the actual shortest path would have 
+been found already.

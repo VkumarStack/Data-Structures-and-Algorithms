@@ -1,0 +1,16 @@
+A topological sort of a directed acyclic graph (directed graph with no loops) is a
+linear ordering of all vertices in G such that if G contains an edge (u, v), then 
+u appears before v in the ordering. For example, this may be used to properly order
+events with a given precedence (i.e. order in which you put on clothes, where you 
+must have underwear->pants->belt and socks and underwear->shoes, etc.). 
+
+Topoloigcal-Sort(G)
+    call DFS(G) to compute finishing times v.f for each vertex v 
+    as each vertex is finished, insert it onto the front of a linked list 
+    return the linked list of vertices 
+
+This is intuitive based on the parenthesis property of depth-first searching. The 
+child of a vertex in a depth-first-tree will always have a finishing time that is 
+less than its ancestor (since the deeper vertices are explored first). Therefore, 
+the very last child will always be placed towards the end of the list and the first 
+vertices will be placed towards the beginning.

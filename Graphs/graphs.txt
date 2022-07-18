@@ -1,0 +1,44 @@
+Graphs are typically represented two ways: adjacency lists and adjacency matrices
+
+Adjacency Lists:
+    An adjacency list representation of a graph G = (V, E) is an array of V lists,
+    with each list representing a specific vertex and the contents of the list 
+    containing all vertices adjacent to that specific vertex. In other words, 
+    Adj[u] contains all vertices adjacent to u in G.
+
+    In an undirected graph, if v appears in u's adjacency list, then u will appear 
+    in v's adajcency list. This is not necessarily the case for directed graphs, 
+    as an item will only appear in another's adjacency list if the given direction 
+    follows (so if a graph is u->v, then the adjacency list for u will contain v but 
+    the adjacency list for v will not contain u)
+
+    In the context of a weighted graph, the weight of an edge (u, v) can be stored 
+    alongside vertex v in u's adjacency list (i.e. using a tuple: u -> (v, 2))
+
+    Advantages: 
+        In terms of memory, the adjacency list representation will only take O(V + E)
+        memory. It is best used for sparse graphs (where there are not that many 
+        edges)
+
+    Disadvantages: 
+        Looking up whether a given edge (u, v) is in the graph is slower in comparison
+        to an adjacency matrix since it requires searching through the adjacency list
+        Adj[u].
+
+Adjacency Matrices:
+    An adjacency matrix representation of a graph G = (V, E) creates a V x V matrix 
+    (two-dimensional array) and fills element a[i][j] with 1 if (i, j) is an edge 
+    and 0 if otherwise. For a weighted graph, instead of using 1, the actual weight 
+    of the edge can be substituted, and a value such as NIL or infinity can be used
+    in place of 0.
+
+    For an undirected graph, there is also symmetry present, as the transpose of this
+    matrix is the same as the original matrix (which means space can be saved by 
+    using either the upper or lower diagonal half of the matrix). 
+
+    Advantages:
+        Adjacency matrices are simpler to implement and provide convenient gains when 
+        working with a dense graph. They allow for immediate lookup of an edge.
+    
+    Disadvantages: 
+        Adjacency matrices are space-intensive, taking up O(V^2) memory.
